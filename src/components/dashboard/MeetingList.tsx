@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Calendar, FileAudio, FileText, ArrowRight, TrendingUp, Activity } from "lucide-react";
+import { Calendar, FileAudio, FileText, ArrowRight, TrendingUp, Activity, Trash2 } from "lucide-react";
 
 export function MeetingList() {
   const [meetings, setMeetings] = useState<any[]>([]);
@@ -25,6 +25,24 @@ export function MeetingList() {
       setMeetings(data);
     }
     setLoading(false);
+  };
+
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!window.confirm("Are you sure you want to delete this intelligence report?")) return;
+    
+    const { error } = await supabase
+      .from('meetings')
+      .delete()
+      .eq('id', id);
+      
+    if (!error) {
+      setMeetings(meetings.filter(m => m.id !== id));
+    } else {
+      alert("Failed to delete meeting.");
+    }
   };
 
   if (loading) {
@@ -60,7 +78,15 @@ export function MeetingList() {
             <div className="p-6 rounded-xl glass-panel group hover:border-primary/50 transition-all h-full flex flex-col cursor-pointer relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full group-hover:bg-primary/10 transition-colors"></div>
               
-              <h4 className="text-lg font-bold mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+              <button 
+                onClick={(e) => handleDelete(e, meeting.id)}
+                className="absolute top-4 right-4 z-10 p-2 bg-background/50 hover:bg-red-500/20 text-foreground/40 hover:text-red-500 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 scale-95 hover:scale-105"
+                title="Delete Intelligence Report"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+
+              <h4 className="text-lg font-bold mb-2 pr-8 line-clamp-1 group-hover:text-primary transition-colors">
                 {meeting.title}
               </h4>
               
