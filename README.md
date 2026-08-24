@@ -1,5 +1,7 @@
 # AuraMeet AI 🎙️
 
+
+
 AuraMeet AI is a production-grade, AI-powered meeting intelligence platform. It seamlessly transcribes meeting audio, generates actionable executive summaries, extracts structured tasks, and uses a Retrieval-Augmented Generation (RAG) Vector Database to allow users to contextually chat with their past meetings.
 
 ## ✨ Key Features
